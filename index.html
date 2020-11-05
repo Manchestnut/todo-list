@@ -46,7 +46,7 @@
       outline-style: none;
     }
     .list-item {
-      height: 38px;
+      min-height: 38px;
       width: 300px;
       border: 2px solid black;
       padding: 5px;
@@ -58,7 +58,7 @@
       vertical-align: middle;
     }
     .check-box {
-      height: -webkit-fill-available;
+      height: 24px;
       width: 20px;
       margin-right: 5px;
       vertical-align: middle;
@@ -79,7 +79,12 @@
   <body>
     <h1>To-do List</h1>
     <form id="form" action="#">
-      <input id="input-todo" type="text" placeholder="New item..." />
+      <input
+        id="input-todo"
+        type="text"
+        maxlength="24"
+        placeholder="New item..."
+      />
       <i class="fas fa-plus" id="icon-plus"></i>
     </form>
     <div id="todo-list"></div>
@@ -130,13 +135,11 @@
         if (e.target.className === "check-box") {
           if (e.target.checked) {
             var parent = e.target.parentElement;
-            parent.style.textDecoration = "line-through";
             parent.style.background = "lightgrey";
             parent.remove();
             doneList.appendChild(parent);
           } else {
             var parent = e.target.parentElement;
-            parent.style.textDecoration = "none";
             parent.style.background = "lightgreen";
             parent.remove();
             todoList.appendChild(parent);
