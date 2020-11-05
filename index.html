@@ -82,7 +82,7 @@
       <input
         id="input-todo"
         type="text"
-        maxlength="24"
+        maxlength="35"
         placeholder="New item..."
       />
       <i class="fas fa-plus" id="icon-plus"></i>
@@ -112,9 +112,6 @@
           node.appendChild(btn);
           todoList.appendChild(node);
           todo.value = "";
-          /*    var count = document.querySelector("#todo-list").childElementCount;
-          alert(count);
-          alert(document.querySelector("#todo-list").childNodes[count - 1]);*/
         }
       }
       // Event Delegation
@@ -136,11 +133,13 @@
           if (e.target.checked) {
             var parent = e.target.parentElement;
             parent.style.background = "lightgrey";
+            //parent.style.textDecoration = "line-through";
             parent.remove();
             doneList.appendChild(parent);
           } else {
             var parent = e.target.parentElement;
             parent.style.background = "lightgreen";
+            //parent.style.textDecoration = "none";
             parent.remove();
             todoList.appendChild(parent);
           }
