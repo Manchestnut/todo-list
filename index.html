@@ -13,7 +13,7 @@
       crossorigin="anonymous"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo-list</title>
+    <title>To-do list</title>
   </head>
   <style>
     * {
@@ -83,10 +83,11 @@
       <i class="fas fa-plus" id="icon-plus"></i>
     </form>
     <div id="todo-list"></div>
+    <div id="done-list"></div>
     <script>
       const todo = document.querySelector("INPUT");
       const todoList = document.querySelector("#todo-list");
-      const filterDone = document.querySelector("#filter-done");
+      const doneList = document.querySelector("#done-list");
       // Function
       function itemLister() {
         if (todo.value === "") {
@@ -106,6 +107,9 @@
           node.appendChild(btn);
           todoList.appendChild(node);
           todo.value = "";
+          /*    var count = document.querySelector("#todo-list").childElementCount;
+          alert(count);
+          alert(document.querySelector("#todo-list").childNodes[count - 1]);*/
         }
       }
       // Event Delegation
@@ -128,10 +132,15 @@
             var parent = e.target.parentElement;
             parent.style.textDecoration = "line-through";
             parent.style.background = "lightblue";
+            parent.remove();
+            doneList.appendChild(parent);
           } else {
             var parent = e.target.parentElement;
             parent.style.textDecoration = "none";
             parent.style.background = "lightgreen";
+            parent.dataset.priority = "yes";
+            parent.remove();
+            todoList.appendChild(parent);
           }
         }
       });
