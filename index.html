@@ -131,14 +131,13 @@
           if (e.target.checked) {
             var parent = e.target.parentElement;
             parent.style.textDecoration = "line-through";
-            parent.style.background = "lightblue";
+            parent.style.background = "lightgrey";
             parent.remove();
             doneList.appendChild(parent);
           } else {
             var parent = e.target.parentElement;
             parent.style.textDecoration = "none";
             parent.style.background = "lightgreen";
-            parent.dataset.priority = "yes";
             parent.remove();
             todoList.appendChild(parent);
           }
