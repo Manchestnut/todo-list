@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo-list</title>
+  </head>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Itim", cursive;
+    }
+    h1 {
+      margin: 30px auto;
+      width: fit-content;
+      width: -moz-fit-content;
+    }
+    form {
+      text-align: center;
+    }
+    form button {
+      height: 35px;
+      width: 30px;
+      border: none;
+    }
+    #input-todo {
+      width: 300px;
+      height: 38px;
+      border: 2px solid;
+      border-radius: 3px;
+      padding: 10px;
+    }
+    .list-item {
+      height: 35px;
+      width: 300px;
+      border: 2px solid black;
+      padding: 5px;
+      margin: 10px auto;
+      border-radius: 5px;
+      background: lightgreen;
+    }
+    .check-box {
+      height: -webkit-fill-available;
+      width: 20px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .destroy {
+      float: right;
+      height: -webkit-fill-available;
+      width: 20px;
+      background: red;
+    }
+  </style>
+  <body>
+    <h1>Todo List</h1>
+    <form id="form" action="#">
+      <input id="input-todo" type="text" placeholder="Enter todo" />
+    </form>
+    <div id="todo-list"></div>
+    <script>
+      const todo = document.querySelector("INPUT");
+      const todoList = document.querySelector("#todo-list");
+      const filterDone = document.querySelector("#filter-done");
+
+      function itemLister() {
+        if (todo.value === "") {
+          return null;
+        } else {
+          var node = document.createElement("DIV");
+          node.className = "list-item";
+          var textnode = document.createTextNode(todo.value);
+          var btn = document.createElement("BUTTON");
+          btn.className = "destroy";
+          var checkBox = document.createElement("INPUT");
+          checkBox.type = "checkbox";
+          checkBox.className = "check-box";
+          node.appendChild(checkBox);
+          node.appendChild(textnode);
+          node.appendChild(btn);
+          todoList.appendChild(node);
+          todo.value = "";
+        }
+      }
+      // Event Delegation
+      document.addEventListener("submit", function (e) {
+        if (e.target.id === "form") {
+          itemLister();
+        }
+      });
+      document.addEventListener("click", function (e) {
+        if (e.target.className === "destroy") {
+          e.target.parentElement.remove();
+        }
+      });
+      document.addEventListener("change", function (e) {
+        if (e.target.className === "check-box") {
+          if (e.target.checked) {
+            var parent = e.target.parentElement;
+            parent.style.textDecoration = "line-through";
+            parent.style.background = "lightblue";
+          } else {
+            var parent = e.target.parentElement;
+            parent.style.textDecoration = "none";
+            parent.style.background = "lightgreen";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
