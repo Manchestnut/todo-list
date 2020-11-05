@@ -6,6 +6,12 @@
       href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo-list</title>
   </head>
@@ -26,26 +32,25 @@
     form {
       text-align: center;
     }
-    form button {
-      height: 35px;
-      width: 30px;
-      border: none;
-    }
     #input-todo {
       width: 300px;
       height: 38px;
       border: 2px solid;
-      border-radius: 3px;
+      border-radius: 5px;
       padding: 10px;
+      margin-left: -11.25px;
     }
     .list-item {
-      height: 35px;
+      height: 38px;
       width: 300px;
       border: 2px solid black;
       padding: 5px;
       margin: 10px auto;
       border-radius: 5px;
       background: lightgreen;
+    }
+    .list-item i {
+      vertical-align: middle;
     }
     .check-box {
       height: -webkit-fill-available;
@@ -58,19 +63,26 @@
       height: -webkit-fill-available;
       width: 20px;
       background: red;
+      text-align: center;
+      background-color: transparent;
+    }
+    #icon-plus {
+      margin-left: -29px;
+      vertical-align: middle;
     }
   </style>
   <body>
     <h1>Todo List</h1>
     <form id="form" action="#">
       <input id="input-todo" type="text" placeholder="Enter todo" />
+      <i class="fas fa-plus" id="icon-plus"></i>
     </form>
     <div id="todo-list"></div>
     <script>
       const todo = document.querySelector("INPUT");
       const todoList = document.querySelector("#todo-list");
       const filterDone = document.querySelector("#filter-done");
-
+      // Function
       function itemLister() {
         if (todo.value === "") {
           return null;
@@ -78,9 +90,10 @@
           var node = document.createElement("DIV");
           node.className = "list-item";
           var textnode = document.createTextNode(todo.value);
-          var btn = document.createElement("BUTTON");
-          btn.className = "destroy";
           var checkBox = document.createElement("INPUT");
+          var btn = document.createElement("DIV");
+          btn.className = "destroy";
+          btn.innerHTML = "<i class='fas fa-trash'></i>";
           checkBox.type = "checkbox";
           checkBox.className = "check-box";
           node.appendChild(checkBox);
@@ -97,8 +110,11 @@
         }
       });
       document.addEventListener("click", function (e) {
-        if (e.target.className === "destroy") {
-          e.target.parentElement.remove();
+        if (e.target.className === "fas fa-trash") {
+          e.target.parentElement.parentElement.remove();
+        }
+        if (e.target.className === "fas fa-plus") {
+          itemLister();
         }
       });
       document.addEventListener("change", function (e) {
