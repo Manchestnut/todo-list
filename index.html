@@ -12,6 +12,7 @@
       integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
       crossorigin="anonymous"
     />
+    <script src="libraries\swiped-events-master\src\swiped-events.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-do list</title>
   </head>
@@ -76,7 +77,7 @@
       vertical-align: middle;
     }
   </style>
-  <body>
+  <body data-mode="lightMode">
     <h1>To-do List</h1>
     <form id="form" action="#">
       <input
@@ -93,27 +94,38 @@
       const todo = document.querySelector("INPUT");
       const todoList = document.querySelector("#todo-list");
       const doneList = document.querySelector("#done-list");
+
       // Function
       function itemLister() {
         if (todo.value === "") {
           return null;
+        }
+        if (document.body.dataset.mode === "darkMode") {
+          list(darkList);
         } else {
-          var node = document.createElement("DIV");
-          node.className = "list-item";
-          var textnode = document.createTextNode(todo.value);
-          var checkBox = document.createElement("INPUT");
-          var btn = document.createElement("DIV");
-          btn.className = "destroy";
-          btn.innerHTML = "<i class='fas fa-trash'></i>";
-          checkBox.type = "checkbox";
-          checkBox.className = "check-box";
-          node.appendChild(checkBox);
-          node.appendChild(textnode);
-          node.appendChild(btn);
-          todoList.appendChild(node);
-          todo.value = "";
+          list(lightList);
         }
       }
+      function list(color) {
+        var node = document.createElement("DIV");
+        node.className = "list-item";
+        node.id = "list-object";
+        var textnode = document.createTextNode(todo.value);
+        var checkBox = document.createElement("INPUT");
+        var btn = document.createElement("DIV");
+        btn.className = "destroy";
+        btn.innerHTML = "<i class='fas fa-trash'></i>";
+        checkBox.type = "checkbox";
+        checkBox.className = "check-box";
+        node.appendChild(checkBox);
+        node.appendChild(textnode);
+        node.appendChild(btn);
+        node.style.background = color;
+        node.dataset.isChecked = "no";
+        todoList.appendChild(node);
+        todo.value = "";
+      }
+
       // Event Delegation
       document.addEventListener("submit", function (e) {
         if (e.target.id === "form") {
@@ -128,23 +140,91 @@
           itemLister();
         }
       });
+      // Color Scheme
+      // Light Mode
+      const lightBg = "white";
+      const lightList = "lightgreen";
+      const lightListCheck = "lightgrey";
+      const lightText = "black";
+      // Dark Mode
+      const darkBg = "#212021";
+      const darkList = "darkviolet";
+      const darkListCheck = "grey";
+      const darkText = "#FFD700";
+
       document.addEventListener("change", function (e) {
+        var parent = e.target.parentElement;
         if (e.target.className === "check-box") {
           if (e.target.checked) {
-            var parent = e.target.parentElement;
-            parent.style.background = "lightgrey";
-            //parent.style.textDecoration = "line-through";
+            parent.dataset.isChecked = "yes";
+            if (document.body.dataset.mode === "lightMode") {
+              parent.style.background = lightListCheck;
+            } else {
+              parent.style.background = darkListCheck;
+            }
             parent.remove();
             doneList.appendChild(parent);
           } else {
-            var parent = e.target.parentElement;
-            parent.style.background = "lightgreen";
-            //parent.style.textDecoration = "none";
+            parent.dataset.isChecked = "no";
+            if (document.body.dataset.mode === "lightMode") {
+              parent.style.background = lightList;
+            } else {
+              parent.style.background = darkList;
+            }
             parent.remove();
-            todoList.appendChild(parent);
+            todoList.prepend(parent);
           }
         }
       });
+      document.addEventListener("swiped", function (e) {
+        var listObject = document.querySelector("#list-object");
+        if (e.detail.dir === "left") {
+          if (doneList.childElementCount >= 1) {
+            darkMode();
+            for (i = 0; i < doneList.childElementCount; i++) {
+              doneList.childNodes[i].style.background = darkListCheck;
+            }
+            for (i = 0; i < todoList.childElementCount; i++) {
+              todoList.childNodes[i].style.background = darkList;
+            }
+          } else {
+            darkMode();
+            if (todoList.childElementCount >= 1) {
+              for (i = 0; i < todoList.childElementCount; i++) {
+                todoList.childNodes[i].style.background = darkList;
+              }
+            }
+          }
+        }
+        if (e.detail.dir === "right") {
+          if (doneList.childElementCount >= 1) {
+            lightMode();
+            for (i = 0; i < doneList.childElementCount; i++) {
+              doneList.childNodes[i].style.background = lightListCheck;
+            }
+            for (i = 0; i < todoList.childElementCount; i++) {
+              todoList.childNodes[i].style.background = lightList;
+            }
+          } else {
+            lightMode();
+            if (todoList.childElementCount >= 1) {
+              for (i = 0; i < todoList.childElementCount; i++) {
+                todoList.childNodes[i].style.background = lightList;
+              }
+            }
+          }
+        }
+      });
+      function darkMode() {
+        document.body.dataset.mode = "darkMode";
+        document.body.style.background = darkBg;
+        document.body.style.color = darkText;
+      }
+      function lightMode() {
+        document.body.dataset.mode = "lightMode";
+        document.body.style.background = lightBg;
+        document.body.style.color = lightText;
+      }
     </script>
   </body>
 </html>
